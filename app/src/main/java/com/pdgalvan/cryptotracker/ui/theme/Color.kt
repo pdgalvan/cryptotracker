@@ -1,5 +1,10 @@
 package com.pdgalvan.cryptotracker.ui.theme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+
+val positiveDark = Color(0xFF8DE2BB)
+val positiveLight = Color(0xFF65B994)
 
 val primaryLight = Color(0xFF4A5C92)
 val onPrimaryLight = Color(0xFFFFFFFF)
@@ -72,3 +77,9 @@ val surfaceContainerLowDark = Color(0xFF1A1B21)
 val surfaceContainerDark = Color(0xFF1E1F25)
 val surfaceContainerHighDark = Color(0xFF292A2F)
 val surfaceContainerHighestDark = Color(0xFF33343A)
+
+fun ColorScheme.isLight() = this.background.luminance() > 0.5
+
+val ColorScheme.positiveGreenColor: Color get() {
+    return if (isLight()) positiveLight else positiveDark
+}
