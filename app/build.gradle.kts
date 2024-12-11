@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.pdgalvan.cryptotracker"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.pdgalvan.cryptotracker"

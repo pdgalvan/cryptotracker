@@ -85,13 +85,13 @@ private val darkScheme = darkColorScheme(
 @Composable
 fun CryptoTrackerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
-  val colorScheme =  if (darkTheme) darkScheme else lightScheme
+    val colorScheme = if (darkTheme) darkScheme else lightScheme
 
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = AppTypography,
-    content = content
-  )
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = AppTypography,
+        content = content
+    )
 }
