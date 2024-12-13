@@ -1,12 +1,12 @@
-package com.pdgalvan.cryptotracker.presentation.coin_list.components
+package com.pdgalvan.cryptotracker.crypto.presentation.coin_list.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.pdgalvan.cryptotracker.presentation.model.DisplayableNumber
-import com.pdgalvan.cryptotracker.presentation.model.toPercentage
+import com.pdgalvan.cryptotracker.crypto.presentation.model.DisplayableNumber
+import com.pdgalvan.cryptotracker.crypto.presentation.model.toPercentage
 import com.pdgalvan.cryptotracker.ui.theme.CryptoTrackerTheme
 import com.pdgalvan.cryptotracker.ui.theme.positiveGreenColor
 import java.math.BigDecimal

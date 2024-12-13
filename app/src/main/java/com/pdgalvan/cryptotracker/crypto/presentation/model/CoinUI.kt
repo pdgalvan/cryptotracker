@@ -1,8 +1,8 @@
-package com.pdgalvan.cryptotracker.presentation.model
+package com.pdgalvan.cryptotracker.crypto.presentation.model
 
 import androidx.annotation.DrawableRes
 import com.pdgalvan.cryptotracker.R
-import com.pdgalvan.cryptotracker.domain.Coin
+import com.pdgalvan.cryptotracker.crypto.domain.Coin
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Locale

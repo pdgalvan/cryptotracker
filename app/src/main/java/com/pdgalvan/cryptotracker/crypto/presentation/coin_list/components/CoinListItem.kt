@@ -1,10 +1,9 @@
-package com.pdgalvan.cryptotracker.presentation.coin_list.components
+package com.pdgalvan.cryptotracker.crypto.presentation.coin_list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.pdgalvan.cryptotracker.domain.Coin
-import com.pdgalvan.cryptotracker.presentation.model.CoinUI
-import com.pdgalvan.cryptotracker.presentation.model.toCoinUI
-import com.pdgalvan.cryptotracker.presentation.model.toCurrency
+import com.pdgalvan.cryptotracker.crypto.domain.Coin
+import com.pdgalvan.cryptotracker.crypto.presentation.model.CoinUI
+import com.pdgalvan.cryptotracker.crypto.presentation.model.toCoinUI
+import com.pdgalvan.cryptotracker.crypto.presentation.model.toCurrency
 import com.pdgalvan.cryptotracker.ui.theme.CryptoTrackerTheme
 import java.math.BigDecimal
 
@@ -30,8 +29,6 @@ fun CoinListItem(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(5.dp)
             .clickable { onItemClick() },
         verticalAlignment = Alignment.CenterVertically,
 
@@ -70,7 +67,7 @@ fun CoinListItem(
 }
 
 
-internal val previewIcon = Coin(
+internal val previewCoin = Coin(
     id = "bitcoin",
     rank = 3,
     symbol = "BTC",
@@ -79,12 +76,35 @@ internal val previewIcon = Coin(
     changePercent24Hr = BigDecimal(0.843),
 ).toCoinUI()
 
+internal val previewNegativeCoin = Coin(
+    id = "ethereum",
+    rank = 3,
+    symbol = "ETH",
+    name = "Ethereum",
+    priceUsd = BigDecimal(68392.1139),
+    changePercent24Hr = BigDecimal(-1.143),
+).toCoinUI()
+
 @PreviewLightDark
 @Composable
 fun CoinListItemPreview(){
     CryptoTrackerTheme {
         CoinListItem(
-            coin = previewIcon,
+            coin = previewCoin,
+            onItemClick =  { },
+            modifier = Modifier.padding(5.dp).background(
+                MaterialTheme.colorScheme.surfaceContainer
+            )
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+fun CoinListNegativeItemPreview(){
+    CryptoTrackerTheme {
+        CoinListItem(
+            coin = previewNegativeCoin,
             onItemClick =  { },
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surfaceContainer
