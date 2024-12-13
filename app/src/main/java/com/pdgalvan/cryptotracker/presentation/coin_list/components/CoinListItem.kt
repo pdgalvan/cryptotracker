@@ -1,4 +1,4 @@
-package com.pdgalvan.cryptotracker.crypto.presentation.coin_list.components
+package com.pdgalvan.cryptotracker.presentation.coin_list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.pdgalvan.cryptotracker.crypto.domain.Coin
-import com.pdgalvan.cryptotracker.crypto.presentation.model.CoinUI
-import com.pdgalvan.cryptotracker.crypto.presentation.model.toCoinUI
-import com.pdgalvan.cryptotracker.crypto.presentation.model.toCurrency
+import com.pdgalvan.cryptotracker.domain.Coin
+import com.pdgalvan.cryptotracker.presentation.model.CoinUI
+import com.pdgalvan.cryptotracker.presentation.model.toCoinUI
+import com.pdgalvan.cryptotracker.presentation.model.toCurrency
 import com.pdgalvan.cryptotracker.ui.theme.CryptoTrackerTheme
 import java.math.BigDecimal
 

@@ -1,4 +1,4 @@
-package com.pdgalvan.cryptotracker.crypto.domain
+package com.pdgalvan.cryptotracker.domain
 
 import java.math.BigDecimal
 
