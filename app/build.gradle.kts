@@ -63,7 +63,8 @@ dependencies {
 
     // retrofit
     implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
 
     // okhttp
     implementation(platform(libs.okhttp.bom))
