@@ -5,7 +5,7 @@ import com.pdgalvan.cryptotracker.core.domain.Result
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.Response
-import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 import kotlin.coroutines.coroutineContext
 
@@ -15,7 +15,7 @@ suspend inline fun<reified T> safeCall(
 ) : Result<T, NetworkError> {
     val response = try {
         execute()
-    } catch(e: SocketTimeoutException) {
+    } catch(e: UnknownHostException) {
         return Result.Error(NetworkError.NO_INTERNET)
     } catch(e: SerializationException) {
         return Result.Error(NetworkError.SERIALIZATION)
