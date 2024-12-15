@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface CoinService  {
 
-    @GET("/assets")
+    @GET("/v2/assets")
     suspend fun getCoins() : Response<CoinsResponseDto>
 }
