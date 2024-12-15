@@ -4,7 +4,7 @@ import com.pdgalvan.cryptotracker.core.domain.NetworkError
 import com.pdgalvan.cryptotracker.core.domain.Result
 import retrofit2.Response
 
-suspend inline fun <reified T> responseToResult(
+inline fun <reified T> responseToResult(
     response: Response<T>
 ): Result<T, NetworkError> {
     return when(response.code()) {
