@@ -1,6 +1,8 @@
 package com.pdgalvan.cryptotracker.di
 
-import com.pdgalvan.cryptotracker.data.datasource.remote.CryptoService
+import com.pdgalvan.cryptotracker.data.datasource.remote.CoinService
+import com.pdgalvan.cryptotracker.data.repository.CoinRepositoryImpl
+import com.pdgalvan.cryptotracker.domain.repository.CoinRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,7 +42,11 @@ class AppModule {
         .build()
 
     @Provides
-    fun provideCryptoService(restAdapter: Retrofit) : CryptoService = restAdapter.create()
+    fun provideCoinService(restAdapter: Retrofit) : CoinService = restAdapter.create()
+
+    @Provides
+    fun provideCoinRepository(coinService: CoinService): CoinRepository = CoinRepositoryImpl(coinService)
+
 }
 
 @Retention(AnnotationRetention.BINARY)
