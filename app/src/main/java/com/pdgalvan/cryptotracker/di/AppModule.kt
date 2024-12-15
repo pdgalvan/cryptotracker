@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.create
@@ -22,7 +23,7 @@ class AppModule {
 
     @Provides
     @ApiEndpoint
-    fun provideApiEndpoint() : String = "https://api.coincap.io/v2"
+    fun provideApiEndpoint() : String = "https://api.coincap.io/v2/"
 
     @Provides
     fun provideLoggingInterceptor() : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -35,9 +36,16 @@ class AppModule {
         .build()
 
     @Provides
-    fun providerRestAdapter(@ApiEndpoint apiEndpoint: String, httpClient: OkHttpClient) : Retrofit = Retrofit.Builder()
+    fun provideJsonConverterFactory() : Converter.Factory = Json{ignoreUnknownKeys =  true}.asConverterFactory("application/json".toMediaType())
+
+    @Provides
+    fun providerRestAdapter(
+        @ApiEndpoint apiEndpoint: String,
+        httpClient: OkHttpClient,
+        converterFactory: Converter.Factory,
+    ) : Retrofit = Retrofit.Builder()
         .baseUrl(apiEndpoint)
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(converterFactory)
         .client(httpClient)
         .build()
 
