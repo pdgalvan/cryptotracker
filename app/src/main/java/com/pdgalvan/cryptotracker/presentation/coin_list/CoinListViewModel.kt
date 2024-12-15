@@ -7,9 +7,11 @@ import com.pdgalvan.cryptotracker.core.domain.onSuccess
 import com.pdgalvan.cryptotracker.domain.repository.CoinRepository
 import com.pdgalvan.cryptotracker.presentation.model.toCoinUI
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,6 +31,8 @@ class CoinListViewModel @Inject constructor(
             initialValue = CoinListState()
         )
 
+    private val _events = Channel<CoinListEvent>()
+    val events = _events.receiveAsFlow()
 
     fun onAction(action: CoinListAction) {
         when (action) {
@@ -51,8 +55,9 @@ class CoinListViewModel @Inject constructor(
                         )
                     }
                 }
-                .onError {
-                    _state.update  { it.copy(isLoading = false) }
+                .onError { error ->
+                    _state.update { it.copy(isLoading = false) }
+                    _events.send(CoinListEvent.Error(error))
                 }
         }
     }

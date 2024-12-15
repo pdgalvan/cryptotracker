@@ -1,5 +1,6 @@
 package com.pdgalvan.cryptotracker.presentation.coin_list
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,23 +17,30 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.pdgalvan.cryptotracker.core.presentation.ObserveAsEvent
+import com.pdgalvan.cryptotracker.core.presentation.toString
 import com.pdgalvan.cryptotracker.presentation.coin_list.components.CoinListItem
 import com.pdgalvan.cryptotracker.presentation.coin_list.components.previewCoin
 import com.pdgalvan.cryptotracker.presentation.coin_list.components.previewNegativeCoin
 import com.pdgalvan.cryptotracker.presentation.model.CoinUI
 import com.pdgalvan.cryptotracker.ui.theme.CryptoTrackerTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun CoinListRoot(
     viewModel: CoinListViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
+
     val state by viewModel.state.collectAsState()
     CoinListScreen(
         state = state,
+        events = viewModel.events,
         modifier = modifier,
     )
 }
@@ -40,8 +48,25 @@ fun CoinListRoot(
 @Composable
 fun CoinListScreen(
     state: CoinListState,
+    events: Flow<CoinListEvent>,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
+    ObserveAsEvent(
+        events = events,
+        onEvent = { event ->
+            when (event) {
+                is CoinListEvent.Error -> {
+                    Toast.makeText(
+                        context,
+                        event.error.toString(context),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    )
     if (state.isLoading) {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -65,12 +90,11 @@ fun CoinListContent(
     LazyColumn(
         modifier = modifier.fillMaxSize().padding(5.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-
-    ) {
+        ) {
         items(coins) { coin ->
             CoinListItem(
                 coin = coin,
-                onItemClick = {  },
+                onItemClick = { },
                 modifier = Modifier.fillMaxWidth()
             )
             HorizontalDivider()
@@ -91,6 +115,7 @@ private fun CoinListScreenPreview() {
     CryptoTrackerTheme {
         CoinListScreen(
             CoinListState(coins = previewCoins),
+            events = emptyFlow(),
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }
