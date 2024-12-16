@@ -9,7 +9,11 @@ fun CoinDto.toCoin() = Coin(
     symbol = symbol,
     name = name,
     priceUsd = priceUsd.toBigDecimal(),
-    changePercent24Hr = changePercent24Hr.toBigDecimal()
+    changePercent24Hr = changePercent24Hr.toBigDecimal(),
+    supply = supply.toBigDecimal(),
+    maxSupply = maxSupply?.toBigDecimal(),
+    marketCapUsd = marketCapUsd.toBigDecimal(),
+    volumeUsd24Hr = volumeUsd24Hr.toBigDecimal(),
 )
 
 fun List<CoinDto>.toCoins() = map { it.toCoin() }

@@ -15,6 +15,10 @@ data class CoinUI(
     val priceUsd: DisplayableNumber,
     val changePercent24Hr: DisplayableNumber,
     val priceVariation: DisplayableNumber,
+    val supply: DisplayableNumber,
+    val maxSupply: DisplayableNumber?,
+    val marketCapUsd: DisplayableNumber,
+    val volumeUsd24Hr: DisplayableNumber,
     @DrawableRes val iconRes: Int,
 )
 
@@ -31,6 +35,10 @@ fun Coin.toCoinUI() = CoinUI(
     priceUsd = priceUsd.toDisplayableNumber(),
     changePercent24Hr = changePercent24Hr.toDisplayableNumber(),
     priceVariation = priceVariation().toDisplayableNumber(),
+    supply = supply.toDisplayableNumber(),
+    maxSupply = maxSupply?.toDisplayableNumber(),
+    marketCapUsd = marketCapUsd.toDisplayableNumber(),
+    volumeUsd24Hr = volumeUsd24Hr.toDisplayableNumber(),
     iconRes = getDrawableIdForCoin(symbol),
 )
 

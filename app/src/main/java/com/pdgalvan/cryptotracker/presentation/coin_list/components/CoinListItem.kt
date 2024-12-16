@@ -77,6 +77,10 @@ internal val previewCoin = Coin(
     name = "Bitcoin",
     priceUsd = BigDecimal(96723.3745),
     changePercent24Hr = BigDecimal(0.843),
+    supply = BigDecimal(17193925.0000),
+    maxSupply = BigDecimal(21000000.0000),
+    marketCapUsd = BigDecimal(119150835874.46200),
+    volumeUsd24Hr = BigDecimal(2927959461.17503),
 ).toCoinUI()
 
 internal val previewNegativeCoin = Coin(
@@ -86,6 +90,10 @@ internal val previewNegativeCoin = Coin(
     name = "Ethereum",
     priceUsd = BigDecimal(68392.1139),
     changePercent24Hr = BigDecimal(-1.143),
+    supply = BigDecimal(17193925.0000),
+    maxSupply = BigDecimal(21000000.0000),
+    marketCapUsd = BigDecimal(119150835874.46200),
+    volumeUsd24Hr = BigDecimal(2927959461.17503),
 ).toCoinUI()
 
 @PreviewLightDark
