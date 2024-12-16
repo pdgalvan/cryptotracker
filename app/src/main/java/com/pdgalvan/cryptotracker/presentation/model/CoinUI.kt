@@ -1,7 +1,7 @@
 package com.pdgalvan.cryptotracker.presentation.model
 
 import androidx.annotation.DrawableRes
-import com.pdgalvan.cryptotracker.R
+import com.pdgalvan.cryptotracker.core.presentation.getDrawableIdForCoin
 import com.pdgalvan.cryptotracker.domain.Coin
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -14,6 +14,7 @@ data class CoinUI(
     val symbol: String,
     val priceUsd: DisplayableNumber,
     val changePercent24Hr: DisplayableNumber,
+    val priceVariation: DisplayableNumber,
     @DrawableRes val iconRes: Int,
 )
 
@@ -29,7 +30,8 @@ fun Coin.toCoinUI() = CoinUI(
     name = name,
     priceUsd = priceUsd.toDisplayableNumber(),
     changePercent24Hr = changePercent24Hr.toDisplayableNumber(),
-    iconRes = R.drawable.ic_default_cryptocurrency,
+    priceVariation = priceVariation().toDisplayableNumber(),
+    iconRes = getDrawableIdForCoin(symbol),
 )
 
 fun BigDecimal.toDisplayableNumber(): DisplayableNumber {

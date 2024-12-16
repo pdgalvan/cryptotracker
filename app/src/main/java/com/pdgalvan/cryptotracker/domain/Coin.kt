@@ -9,4 +9,6 @@ data class Coin(
     val name: String,
     val priceUsd: BigDecimal,
     val changePercent24Hr: BigDecimal,
-)
+){
+    fun priceVariation() = priceUsd * (changePercent24Hr / BigDecimal(100))
+}
