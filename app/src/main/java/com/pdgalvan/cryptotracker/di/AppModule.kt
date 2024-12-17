@@ -36,7 +36,10 @@ class AppModule {
         .build()
 
     @Provides
-    fun provideJsonConverterFactory() : Converter.Factory = Json{ignoreUnknownKeys =  true}.asConverterFactory("application/json".toMediaType())
+    fun provideJsonConverterFactory(): Converter.Factory {
+        val jsonConverter = Json { ignoreUnknownKeys = true }
+        return jsonConverter.asConverterFactory("application/json".toMediaType())
+    }
 
     @Provides
     fun providerRestAdapter(

@@ -1,5 +1,6 @@
 package com.pdgalvan.cryptotracker.presentation.coin_detail
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,27 +31,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pdgalvan.cryptotracker.R
+import com.pdgalvan.cryptotracker.core.presentation.ObserveAsEvent
+import com.pdgalvan.cryptotracker.core.presentation.toString
 import com.pdgalvan.cryptotracker.presentation.coin_detail.components.CoinDetailItem
 import com.pdgalvan.cryptotracker.presentation.coin_list.components.PriceChange
 import com.pdgalvan.cryptotracker.presentation.coin_list.components.previewCoin
 import com.pdgalvan.cryptotracker.presentation.model.CoinUI
 import com.pdgalvan.cryptotracker.presentation.model.toCurrency
 import com.pdgalvan.cryptotracker.ui.theme.CryptoTrackerTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun CoinDetailRoot(
+    onBack: () -> Unit,
     viewModel: CoinDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsState()
     CoinDetailScreen(
         state = state,
+        events = viewModel.events,
+        onBack = onBack,
         modifier = modifier,
     )
 }
@@ -58,8 +67,27 @@ fun CoinDetailRoot(
 @Composable
 fun CoinDetailScreen(
     state: CoinDetailState,
+    events: Flow<CoinDetailEvent>,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
+    ObserveAsEvent(
+        events = events,
+        onEvent = { event ->
+            when (event) {
+                is CoinDetailEvent.Error -> {
+                    Toast.makeText(
+                        context,
+                        event.error.toString(context),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    )
+
     if (state.isLoading) {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -71,6 +99,7 @@ fun CoinDetailScreen(
         if (state.coinUI != null) {
             CoinDetailContent(
                 coinUI = state.coinUI,
+                onBack = onBack,
                 modifier = modifier,
             )
         }
@@ -80,6 +109,7 @@ fun CoinDetailScreen(
 @Composable
 fun CoinDetailContent(
     coinUI: CoinUI,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -87,7 +117,7 @@ fun CoinDetailContent(
         topBar = {
             TopBar(
                 title = coinUI.name,
-                onBack = { }
+                onBack = onBack,
             )
         },
     ) { innerPadding ->
@@ -139,12 +169,12 @@ fun CoinDetailContent(
             ) {
                 CoinDetailItem(
                     label = stringResource(R.string.coin_detail_label_mark_cap),
-                    description = coinUI.name,
+                    description = coinUI.marketCapUsd.toCurrency(),
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                 )
                 CoinDetailItem(
                     label = stringResource(R.string.coin_detail_label_volume_24hr),
-                    description = coinUI.name,
+                    description = coinUI.volumeUsd24Hr.toCurrency(),
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                 )
             }
@@ -157,14 +187,16 @@ fun CoinDetailContent(
             ) {
                 CoinDetailItem(
                     label = stringResource(R.string.coin_detail_label_available_supply),
-                    description = coinUI.name,
+                    description = coinUI.supply.formatted,
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                 )
-                CoinDetailItem(
-                    label = stringResource(R.string.coin_detail_label_total_supply),
-                    description = coinUI.name,
-                    modifier = Modifier.weight(1f).fillMaxWidth(),
-                )
+                coinUI.maxSupply?.let { maxSupply ->
+                    CoinDetailItem(
+                        label = stringResource(R.string.coin_detail_label_total_supply),
+                        description = maxSupply.formatted,
+                        modifier = Modifier.weight(1f).fillMaxWidth(),
+                    )
+                }
             }
         }
     }
@@ -196,7 +228,9 @@ private fun TopBar(
 fun CoinDetailScreenPreview() {
     CryptoTrackerTheme {
         CoinDetailScreen(
-            state = CoinDetailState(coinUI = previewCoin)
+            state = CoinDetailState(coinUI = previewCoin),
+            events = emptyFlow(),
+            onBack = { }
         )
     }
 }

@@ -34,14 +34,6 @@ class CoinListViewModel @Inject constructor(
     private val _events = Channel<CoinListEvent>()
     val events = _events.receiveAsFlow()
 
-    fun onAction(action: CoinListAction) {
-        when (action) {
-            is CoinListAction.onCoinClick -> {
-
-            }
-        }
-    }
-
     private fun loadCoins() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }

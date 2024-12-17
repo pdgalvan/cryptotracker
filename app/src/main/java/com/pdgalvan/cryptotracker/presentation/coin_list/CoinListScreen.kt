@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun CoinListRoot(
+    onCoinClick: (id: String) -> Unit,
     viewModel: CoinListViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
@@ -42,6 +43,7 @@ fun CoinListRoot(
         state = state,
         events = viewModel.events,
         modifier = modifier,
+        onCoinClick = onCoinClick,
     )
 }
 
@@ -49,6 +51,7 @@ fun CoinListRoot(
 fun CoinListScreen(
     state: CoinListState,
     events: Flow<CoinListEvent>,
+    onCoinClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -77,6 +80,7 @@ fun CoinListScreen(
     } else {
         CoinListContent(
             coins = state.coins,
+            onCoinClick = onCoinClick,
             modifier = modifier
         )
     }
@@ -85,16 +89,17 @@ fun CoinListScreen(
 @Composable
 fun CoinListContent(
     coins: List<CoinUI>,
+    onCoinClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize().padding(5.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
+    ) {
         items(coins) { coin ->
             CoinListItem(
                 coin = coin,
-                onItemClick = { },
+                onItemClick = { onCoinClick(coin.id) },
                 modifier = Modifier.fillMaxWidth()
             )
             HorizontalDivider()
@@ -116,6 +121,7 @@ private fun CoinListScreenPreview() {
         CoinListScreen(
             CoinListState(coins = previewCoins),
             events = emptyFlow(),
+            onCoinClick = {},
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

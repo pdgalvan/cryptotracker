@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.pdgalvan.cryptotracker.presentation.coin_list.CoinListRoot
+import androidx.navigation.compose.rememberNavController
+import com.pdgalvan.cryptotracker.navigation.AppNavigation
 import com.pdgalvan.cryptotracker.ui.theme.CryptoTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,8 +21,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             CryptoTrackerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CoinListRoot(
+                    val navController = rememberNavController()
+                    AppNavigation(
                         modifier = Modifier.padding(innerPadding),
+                        navController = navController,
                     )
                 }
             }

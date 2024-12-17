@@ -6,5 +6,7 @@ import com.pdgalvan.cryptotracker.domain.Coin
 
 interface CoinRepository {
 
-    suspend fun getCoins() : Result<List<Coin>, NetworkError>
+    suspend fun getCoins(): Result<List<Coin>, NetworkError>
+
+    suspend fun getCoin(id: String): Result<Coin, NetworkError>
 }

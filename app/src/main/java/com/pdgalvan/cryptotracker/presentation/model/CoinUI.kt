@@ -58,4 +58,4 @@ fun DisplayableNumber.toPercentage(): String {
     return "$sign${this.formatted}%"
 }
 
-fun DisplayableNumber.toCurrency() = "$${this.formatted}"
+fun DisplayableNumber.toCurrency() = "$ ${this.formatted}"
