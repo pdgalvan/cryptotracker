@@ -57,6 +57,21 @@ class CoinDetailViewModel @Inject constructor(
                     _state.update { it.copy(isLoading = false) }
                     _events.send(CoinDetailEvent.Error(error))
                 }
+
+            repository
+                .getCoinPriceHistory(coinDetail.id)
+                .onSuccess { coinPrices ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            coinPrices = coinPrices,
+                        )
+                    }
+                }
+                .onError { error ->
+                    _state.update { it.copy(isLoading = false) }
+                    _events.send(CoinDetailEvent.Error(error))
+                 }
         }
     }
 }

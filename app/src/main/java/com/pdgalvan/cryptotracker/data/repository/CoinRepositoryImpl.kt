@@ -6,8 +6,10 @@ import com.pdgalvan.cryptotracker.core.domain.map
 import com.pdgalvan.cryptotracker.core.network.safeCall
 import com.pdgalvan.cryptotracker.data.datasource.remote.CoinService
 import com.pdgalvan.cryptotracker.data.mappers.toCoin
+import com.pdgalvan.cryptotracker.data.mappers.toCoinPrice
 import com.pdgalvan.cryptotracker.data.mappers.toCoins
 import com.pdgalvan.cryptotracker.domain.Coin
+import com.pdgalvan.cryptotracker.domain.CoinPrice
 import com.pdgalvan.cryptotracker.domain.repository.CoinRepository
 import javax.inject.Inject
 
@@ -19,4 +21,9 @@ class CoinRepositoryImpl @Inject constructor(private val coinService: CoinServic
     override suspend fun getCoin(id: String): Result<Coin, NetworkError> {
         return safeCall { coinService.getCoin(id) }.map { it.data.toCoin() }
     }
+
+    override suspend fun getCoinPriceHistory(id: String): Result<List<CoinPrice>, NetworkError> {
+        return safeCall { coinService.getCoinPriceHistory(id) }.map {  response -> response.data.map { it.toCoinPrice() } }
+    }
+
 }
