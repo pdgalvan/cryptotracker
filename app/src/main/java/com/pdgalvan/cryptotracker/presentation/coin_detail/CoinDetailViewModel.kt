@@ -64,7 +64,7 @@ class CoinDetailViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            coinPrices = coinPrices,
+                            dataPoints = coinPrices.toDataPoints(),
                         )
                     }
                 }

@@ -2,7 +2,6 @@ package com.pdgalvan.cryptotracker.presentation.coin_detail
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -27,9 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pdgalvan.cryptotracker.R
 import com.pdgalvan.cryptotracker.core.presentation.ObserveAsEvent
 import com.pdgalvan.cryptotracker.core.presentation.toString
+import com.pdgalvan.cryptotracker.domain.CoinPrice
 import com.pdgalvan.cryptotracker.presentation.coin_detail.components.CoinDetailItem
 import com.pdgalvan.cryptotracker.presentation.coin_list.components.PriceChange
 import com.pdgalvan.cryptotracker.presentation.coin_list.components.previewCoin
@@ -48,6 +49,9 @@ import com.pdgalvan.cryptotracker.presentation.model.toCurrency
 import com.pdgalvan.cryptotracker.ui.theme.CryptoTrackerTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import java.math.BigDecimal
+import java.time.ZonedDateTime
+import kotlin.random.Random
 
 @Composable
 fun CoinDetailRoot(
@@ -99,6 +103,7 @@ fun CoinDetailScreen(
         if (state.coinUI != null) {
             CoinDetailContent(
                 coinUI = state.coinUI,
+                dataPoints = state.dataPoints,
                 onBack = onBack,
                 modifier = modifier,
             )
@@ -109,6 +114,7 @@ fun CoinDetailScreen(
 @Composable
 fun CoinDetailContent(
     coinUI: CoinUI,
+    dataPoints: List<DataPoint>,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -150,13 +156,14 @@ fun CoinDetailContent(
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(start = 16.dp),
             )
+            if(dataPoints.isNotEmpty()) {
+                LineChart(
+                    data = dataPoints,
+                    modifier = Modifier.width(700.dp)
+                        .height(300.dp)
+                )
+            }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(256.dp)
-                    .background(Color.Blue)
-            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -227,8 +234,17 @@ private fun TopBar(
 @Composable
 fun CoinDetailScreenPreview() {
     CryptoTrackerTheme {
+        val coinHistoryRandomized = remember {
+            (1..20).map {
+                CoinPrice(
+                    priceUsd = BigDecimal(Random.nextFloat() * 100.0),
+                    time = ZonedDateTime.now().plusHours(it.toLong()),
+                )
+            }
+        }
+
         CoinDetailScreen(
-            state = CoinDetailState(coinUI = previewCoin),
+            state = CoinDetailState(coinUI = previewCoin, dataPoints = coinHistoryRandomized.toDataPoints()),
             events = emptyFlow(),
             onBack = { }
         )

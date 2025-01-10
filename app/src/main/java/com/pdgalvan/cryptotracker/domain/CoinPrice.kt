@@ -4,6 +4,6 @@ import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 data class CoinPrice(
-    val price: BigDecimal,
+    val priceUsd: BigDecimal,
     val time: ZonedDateTime,
 )

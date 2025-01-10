@@ -15,6 +15,6 @@ interface CoinService {
     @GET("/v2/assets/{id}")
     suspend fun getCoin(@Path("id") id: String): Response<CoinResponseDto>
 
-    @GET("v2/assets/{id}/history?interval=d1")
+    @GET("/v2/assets/{id}/history?interval=d1")
     suspend fun getCoinPriceHistory(@Path("id") id: String): Response<CoinPriceHistoryDto>
 }

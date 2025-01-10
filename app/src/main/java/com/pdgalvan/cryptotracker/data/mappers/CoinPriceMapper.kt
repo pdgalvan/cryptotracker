@@ -6,6 +6,6 @@ import java.time.Instant
 import java.time.ZoneId
 
 fun CoinPriceDto.toCoinPrice() = CoinPrice(
-    price = priceUsd.toBigDecimal(),
-    time = Instant.ofEpochMilli(timestamp).atZone(ZoneId.of("UTC"))
+    priceUsd = priceUsd.toBigDecimal(),
+    time = Instant.ofEpochMilli(time).atZone(ZoneId.of("UTC"))
 )
